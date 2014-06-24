@@ -80,12 +80,51 @@ This object would be the entry point, and the graph can be explored via object's
 
 Code Example:
 ```javascript
-
+TODO
 ```
 
-## Realtime
+## Realtime and Sync
 
+### Events
+The graph, as it keeps changing, these changes can be listened in realtime and if you missed some changes while being offline, they will be automatically pulled from where you left and local changes will be automatically pushed. Checkout the API Docs __TODO: Link__, to know how conflicts can be handled.
 
+In _Appbase_, there are five kind of events fired on an object: 
 
+\#|Event|Fired when|
+-|-|-|
+1|`value`| Object's data is changed, ie. a property is added, removed, or its value is changed
+2|`link_added`| A new link is added
+3|`link_removed`| A link is removed 
+4|`link_changed`| A named link now points to a different object, or its order is manually changed. Note: It has nothing to do with changes in the data of the linked object - __TODO: A Discussion__
+5|`link_value`| A link's data is changed. Note: Use only when critically needed, as in the background this event listens to `value` event for _all_ the links - __TODO: A Discussion__
 
+Whenever an event is fired, the callback is passed an _Appbase Snapshot Object_, which includes the stored data and ordering details. Take a look at the API Docs __TODO: Link__ for more details on _Snapshot Object_. 
 
+### Reading Data from Appbase
+
+In _Appbase_, the only way to read data is listening to events. `value` event returns  _existing_ data at first, and later on, is fired whenever the data is changed. 
+
+Similarly,  `link_added` event returns _existing_ links at first, and is subsequently fired when a new link is added. Although, this behavior can be controlled via `limit` and `startAt` options, take a look at the API Docs __TODO: Link__. 
+
+Events `link_removed`, `link_changed`, `link_value` are fired only when the data is _modified_.
+
+Code Example:
+```javascript
+TODO
+```
+
+### How the events are fired
+
+__Not sure whether to keep this section here. It helps understanding Appbase, and clarifies some edge cases.__
+
+Appbase client library _caches_ the data locally, in a _graph_ like data structure. In the background it uses the REST api __TODO: Link__, and listens to the paths requested by the user. When new data is arrived, it compares the data with the cache, and the events are fired accordingly. 
+
+Eg. While listening to link events, if the data arriving data is `{name:'subscribes_to', points_to: 'ABCXYZ', order:5}`. Now,
+
+1. If the link named `subscribes_to` exists in the cache, `link_changed` event is fired.
+2. If the link doesn't exist, `link_added` event is fired.
+
+If the data arriving data is `{name:'subscribes_to', points_to: null}`. Then,
+
+1. If the link named `subscribes_to` exists in the cache, `link_removed` event is fired.
+2. If the link doesn't exist, the data will be ignored and no event is fired.
