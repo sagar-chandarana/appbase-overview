@@ -6,7 +6,7 @@ An _object_ in Appbase very similar to a JSON object, and contains key/value pai
 
 Properties can be accessed using __TODO__ method and they can only contain primitive data (Number/String). To set value for a property, use __TODO__ method.
 
-Example:
+Code Example:
 ```javascript
 TODO
 ```
@@ -21,22 +21,67 @@ Namespace are __NOT__ containers of objects, and the _primary key_ of an object 
 
 Namespaces are automatically created when a new namespace is specified in `Appbase.new()`, although this behavior can be controlled by security rules. An object can be moved amongst namespaces, which might be useful over the course of development. 
 
-To access an object which was previously created using `Appbase.new()`, use `Appbase.ref(namespace/key)`, which returns an Appbase Reference to the object.
+To access an object which was previously created using `Appbase.new()`, use `Appbase.ref(app_url/namespace/key)`, which returns an Appbase Reference to the object.
 
-Example:
+Code Example:
 ```javascript
 TODO
 ```
 
 ## The Graph
 
-Today's application are complex and the objects in the application are linked to eachother in a number of ways and dimensions. For eg., social applications. The data of such applications can not be modelled in a simple Table-Row or Tree data structure.
+Today's application are complex and objects in the application are linked to eachother in a number of ways and dimensions. For eg. social applications. The data of such applications can not be modeled in a simple Table-Row or Tree data structure.
 
 ### Links
 
-In _Appbase_ a number of links can be pointed from one object to other objects, allowing you to create a _Graph_. Links in an object are _named_ and _ordered_. 
+In _Appbase_ a number of links can be pointed from one object to other objects, allowing you to create a _Graph_. 
+
+Links in an object are _named_. This allows having _one to one_ relationships amongst objects. For eg. In a chat application, every chat would be posted by a user, and this relation  can be modeled as a named link in Appbase. Other such examples are given below.
+
+\#|From|Relation|To|
+-|-|-|-|
+1|`Chat object`| posted_by |`User Object`|
+2|`Document object`|owner|`User object`|
+3|`User object`|subscribes_to|`User/Channel object`|
+
+Code Example:
+```javascript
+TODO
+```
+
+For convenience, if no name is given to the link, _primary key_ of the object being added in the link, becomes the link name. This way, an object can be used as a container of other objects.
+
+Code Example:
+```javascript
+TODO
+```
+
+Objects as containers are also useful for creating _one to many_ relationships. Look at the 3rd example in the table given above. A user may subscribe to number of channels. In this case, `User` object's link `subscribes_to` could point to a `ChannelsContainer` object, which can have any number of channels.
+
+Code Example:
+```javascript
+TODO
+```
+
+Links in an object are automatically arranged in the increasing order starting from `0`, i.e. the first link being added will get the index `0`, the second would get `1` and so on. While retrieving linked objects, one can specify the starting and ending indexes. The order of a link can be specified manually while adding the link, or it can be modified later on.
+
+Code Example:
+```javascript
+TODO
+```
 
 ### Paths
+
+A _path_ in _Appbase_, is a way to access the graph. 
+
+It starts from the url given to application, followed by a namespace and the primary key of an object. Eg. `https://shawshank.api.appbase.io/user/andy_dufresne` points to th `user` object with primary key `andy_dufresne`. 
+
+This object would be the entry point, and the graph can be explored via object's links. Eg. `https://shawshank.api.appbase.io/user/andy_dufresne/best_friend` points to the object added as the link `best_friend` in the `user` object with primary key `andy_dufresne`. This path can be given to `Appbase.ref(path)` and the returned _Appbase Reference Object_ will point to the linked object and read/write operations on this reference, will affect the linked object. 
+
+Code Example:
+```javascript
+
+```
 
 ## Realtime
 
