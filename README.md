@@ -38,11 +38,11 @@ In _Appbase_ a number of links can be pointed from one object to other objects, 
 
 Links in an object are _named_. This allows having _one to one_ relationships amongst objects. For eg. In a chat application, every chat would be posted by a user, and this relation  can be modeled as a named link in Appbase. Other such examples are given below.
 
-\#|From|Relation|To|
--|-|-|-|
-1|`Chat object`| posted_by |`User Object`|
-2|`Document object`|owner|`User object`|
-3|`User object`|subscribes_to|`User/Channel object`|
+\#|From|Relation|To
+-|-|-|-
+1|`Chat object`| posted_by |`User Object`
+2|`Document object`|owner|`User object`
+3|`User object`|subscribes_to|`User/Channel object`
 
 Code Example:
 ```javascript
@@ -85,8 +85,11 @@ TODO
 
 ## Realtime and Sync
 
+As the graph keeps changing, these changes can be listened to in realtime. 
+
+If you missed some changes while being offline, they will be automatically pulled from where you left and local changes will be automatically pushed. Checkout the API Docs __TODO: Link__, to know how conflicts can be handled.
+
 ### Events
-The graph, as it keeps changing, these changes can be listened in realtime and if you missed some changes while being offline, they will be automatically pulled from where you left and local changes will be automatically pushed. Checkout the API Docs __TODO: Link__, to know how conflicts can be handled.
 
 In _Appbase_, there are five kind of events fired on an object: 
 
