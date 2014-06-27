@@ -4,11 +4,15 @@
 
 An _object_ in Appbase very similar to a JSON object, and contains key/value pairs. The keys in an object are called the _properties_ of the _object_. An object can be created using `Appbase.new({pk: key})`, where the `key` is a _primary key_ given to the object, and this key can be used later on to _fetch_ the object from Appbase. If no `key` is given, a random string will be assigned as the key for the object. `Appbase.new()` returns an `Appbase Reference Object` which is a reference to the object stored in Appbase. Read/write operations can be carried out this reference object.
 
-Properties can be accessed using __TODO__ method and they can only contain primitive data (Number/String). To set value for a property, use __TODO__ method.
+Properties can only contain primitive data (Number/String). To set value for a property, use `set(prop,value)` method on the reference.
 
 Code Example:
 ```javascript
-TODO
+var myDataRef = Appbase.new({pk:'andy_dufresne'});
+
+myDataRef.set('firstname','Andy');
+myDataRef.set('lastname','Dufresne');
+
 ```
 
 ## Namespaces
@@ -25,7 +29,9 @@ To access an object which was previously created using `Appbase.new()`, use `App
 
 Code Example:
 ```javascript
-TODO
+var myDataRef = Appbase.ref("https://shawshank.api.appbase.io/Default/andy_dufresne");
+
+myDataRef.set('prison_id',37927);
 ```
 
 ## The Graph
